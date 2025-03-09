@@ -1,63 +1,202 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🌍 Backend - Travel App  
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Este backend en **Laravel 10** gestiona la información de ciudades, presupuestos y servicios API externos como clima y cambio de moneda.  
 
-## About Laravel
+## 📌 Características  
+✅ API REST para manejar ciudades y presupuestos.  
+✅ Integración con API de clima y conversión de moneda.  
+✅ Migraciones y seeders para poblar la base de datos.  
+✅ Arquitectura Modelo-Vista-Controlador (MVC).  
+✅ Documentación de endpoints con Postman.  
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 🚀 Instalación y Configuración  
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### 1️⃣ Clonar el Repositorio  
+```bash
+git clone https://github.com/tuusuario/travel-backend.git
+cd travel-backend
+2️⃣ Instalar Dependencias
+bash
+Copiar
+Editar
+composer install
+3️⃣ Configurar Variables de Entorno
+Copia el archivo de ejemplo:
 
-## Learning Laravel
+bash
+Copiar
+Editar
+cp .env.example .env
+Edita .env y configura la base de datos:
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+ini
+Copiar
+Editar
+DB_CONNECTION=mysql  
+DB_HOST=127.0.0.1  
+DB_PORT=3306  
+DB_DATABASE=travel_db  
+DB_USERNAME=root  
+DB_PASSWORD=  
+También agrega las claves de API para los servicios externos:
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+ini
+Copiar
+Editar
+API_CLIMA_KEY=tu_api_key
+API_MONEDA_KEY=tu_api_key
+4️⃣ Generar la Clave de Aplicación
+bash
+Copiar
+Editar
+php artisan key:generate
+5️⃣ Ejecutar Migraciones y Seeders
+bash
+Copiar
+Editar
+php artisan migrate --seed
+6️⃣ Iniciar el Servidor
+bash
+Copiar
+Editar
+php artisan serve
+La API estará disponible en http://127.0.0.1:8000/api.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+🛠️ Estructura del Proyecto
+bash
+Copiar
+Editar
+📂 travel-backend
+ ├── 📂 app
+ │    ├── 📂 Http
+ │    │    ├── 📂 Controllers
+ │    │    │    ├── CityController.php
+ │    │    │    ├── BudgetController.php
+ │    │    │    ├── AuthController.php
+ │    ├── 📂 Models
+ │    │    ├── City.php
+ │    │    ├── Budget.php
+ ├── 📂 database
+ │    ├── 📂 migrations
+ │    ├── 📂 seeders
+ │    │    ├── CitySeeder.php
+ ├── 📂 routes
+ │    ├── api.php
+ │    ├── web.php
+ ├── .env
+ ├── composer.json
+ ├── README.md
+🛠️ Modelo-Vista-Controlador (MVC)
+📌 Modelo - City.php
+Representa la tabla cities en la base de datos.
 
-## Laravel Sponsors
+php
+Copiar
+Editar
+namespace App\Models;
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
-### Premium Partners
+class City extends Model
+{
+    use HasFactory;
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+    protected $fillable = ['country', 'currency_name', 'currency_symbol', 'currency_code'];
+}
+📌 Migración - 2024_03_07_create_cities_table.php
+php
+Copiar
+Editar
+public function up()
+{
+    Schema::create('cities', function (Blueprint $table) {
+        $table->id();
+        $table->string('country');
+        $table->string('currency_name');
+        $table->string('currency_symbol', 10);
+        $table->string('currency_code', 5);
+        $table->timestamps();
+    });
+}
+📌 Seeder - CitySeeder.php
+php
+Copiar
+Editar
+public function run()
+{
+    City::create([
+        'country' => 'Colombia',
+        'currency_name' => 'Peso Colombiano',
+        'currency_symbol' => '$',
+        'currency_code' => 'COP'
+    ]);
+}
+📌 Controlador - CityController.php
+php
+Copiar
+Editar
+namespace App\Http\Controllers;
 
-## Contributing
+use Illuminate\Http\Request;
+use App\Models\City;
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+class CityController extends Controller
+{
+    public function index() {
+        return response()->json(City::select('country', 'currency_name', 'currency_symbol', 'currency_code')->get());
+    }
+}
+🌐 Rutas en Laravel
+📌 Archivo routes/api.php
+php
+Copiar
+Editar
+use App\Http\Controllers\CityController;
 
-## Code of Conduct
+Route::get('/cities', [CityController::class, 'index']);
+🔥 Servicios API Externos
+📌 Clima - WeatherController.php
+php
+Copiar
+Editar
+public function getWeather($city) {
+    $apiKey = env('API_CLIMA_KEY');
+    $response = Http::get("https://api.openweathermap.org/data/2.5/weather?q=$city&appid=$apiKey");
+    return $response->json();
+}
+📌 Ruta en api.php
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+php
+Copiar
+Editar
+Route::get('/weather/{city}', [WeatherController::class, 'getWeather']);
+🔑 Autenticación con Laravel Sanctum
+📌 Instalación de Sanctum
 
-## Security Vulnerabilities
+bash
+Copiar
+Editar
+composer require laravel/sanctum
+php artisan migrate
+📌 Protección de rutas
+
+php
+Copiar
+Editar
+Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
+    return $request->user();
+});
+📂 Documentación de la API en Postman
+Se incluye una colección de Postman con los endpoints:
+📌 Postman Collection
+
+Ejemplo de Endpoints
+Método	Endpoint	Descripción
+GET	/api/cities	Lista las ciudades
+GET	/api/weather/{city}	Obtiene el clima de una ciudad
 
 If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
 
