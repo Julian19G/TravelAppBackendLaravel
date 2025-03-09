@@ -9,8 +9,15 @@ class CityController extends Controller
 {
     public function index() {
         $cities = City::all();
-        return view('cities.index', compact('cities'));
+        return response()->json(City::select('country', 'currency_name', 'currency_symbol', 'currency_code')->get());
+
     }
+
+    public function showTable() {
+        $cities = City::all(); // Obtiene todas las ciudades
+        return view('cities.index', compact('cities')); // Retorna la vista con los datos
+    }
+    
     
 
     public function create() {

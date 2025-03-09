@@ -31,7 +31,7 @@ class ApiController extends Controller
     
         $response = Http::get($url);
     
-        if (!$response->successful()) {
+        if (!$response->successful()) { 
             return response()->json(['error' => 'No se pudo obtener la información de la tasa de cambio'], 500);
         }
     
@@ -50,6 +50,17 @@ class ApiController extends Controller
         return response()->json([
             'COP_to_USD' => $copToUsd,
             'rate_date' => $data['date']
+        ]);
+    }
+    
+    public function getCityData($city)
+    {
+        $weather = $this->getWeather($city)->getData();
+        $exchange = $this->getExchange()->getData();
+    
+        return response()->json([
+            'weather' => $weather,
+            'exchange_rate' => $exchange,
         ]);
     }
     
